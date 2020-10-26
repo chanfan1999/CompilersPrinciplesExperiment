@@ -5,10 +5,6 @@ import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
 import kotlin.collections.HashSet
 
-fun main(){
-
-}
-
 class NFAUtils{
 
     companion object{
@@ -53,7 +49,7 @@ class NFAUtils{
             return numberNode(toPostFix(exp))
         }
 
-        fun toPostFix(exp: String): Component {
+        private fun toPostFix(exp: String): Component {
             var lastIsLetter = false
             val sb = StringBuilder()
             for (i in exp) {
@@ -161,7 +157,7 @@ class NFAUtils{
             return Component(tempStart, tempEnd)
         }
 
-        fun numberNode(c: Component): ArrayList<Node> {
+        private fun numberNode(c: Component): ArrayList<Node> {
             val nodeList = ArrayList<Node>()
             val visited = HashMap<Node, Boolean>()
             val queue = ArrayDeque<Node>() as Queue<Node>

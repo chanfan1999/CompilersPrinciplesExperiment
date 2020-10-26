@@ -66,6 +66,7 @@ class MainController {
     fun toNFA() {
         val status = NFAUtils.countStatusNumber(regexText.text)
         val resultList = NFAUtils.regexToNFA(regexText.text)
+        DFAUtils.esList(resultList)
         val nfaText = NFAUtils.getNFATableText(resultList,status)
         val n = StringBuilder()
         nfaText.forEach {
