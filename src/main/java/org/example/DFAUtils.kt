@@ -1,22 +1,15 @@
 package org.example
 
 import org.example.NFAUtils.Companion.EPSILON
-import java.lang.StringBuilder
 import java.util.*
 import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
 import kotlin.collections.HashSet
 
-fun main() {
-    val r = NFAUtils.regexToNFA("a|bc")
-    val status = NFAUtils.countStatusNumber("a|bc")
-    val d = DFAUtils.toDFA(r, status)
-    println("1")
-}
 
 class DFAUtils {
     companion object {
-        val nameMap = HashMap<DFANode, String>()
+        private val nameMap = HashMap<DFANode, String>()
         fun toDFA(nfaResult: ArrayList<Node>, status: ArrayList<String>): ArrayList<DFANode> {
             val epsilonList = esList(nfaResult)//储存每个节点的epsilon闭包
             val statusExists = HashMap<DFANode, Int>()
@@ -90,19 +83,29 @@ class DFAUtils {
             }
         }
 
-        //todo 完成dfa文本展示
-        fun toDFAText(dfaResult: ArrayList<DFANode>): String {
+
+        fun getDFATableText(dfaResult: ArrayList<DFANode>): String {
             val sb = StringBuilder()
             for (i in dfaResult) {
-                sb.append("节点${i.name}:\n")
+                sb.append("状态${nameMap[i]}包括:\n")
+                for (j in i.containList) {
+                    sb.append(j)
+                    sb.append(" ")
+                }
+                sb.append('\n')
+            }
+
+            for (i in dfaResult) {
+                sb.append("状态${nameMap[i]}:\n")
                 for ((k, v) in i.toStatus) {
                     sb.append(k)
                     sb.append("-->")
                     if (v == null) {
                         sb.append("空集  ")
                     } else {
-
+                        sb.append(nameMap[v] + "  ")
                     }
+                    sb.append('\n')
                 }
             }
             return sb.toString()

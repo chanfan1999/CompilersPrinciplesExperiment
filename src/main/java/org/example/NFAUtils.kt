@@ -5,25 +5,25 @@ import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
 import kotlin.collections.HashSet
 
-class NFAUtils{
+class NFAUtils {
 
-    companion object{
+    companion object {
         const val EPSILON = "epsilon"
-        fun getNFATableText(result:ArrayList<Node>,status:ArrayList<String>):ArrayList<String>{
+        fun getNFATableText(result: ArrayList<Node>, status: ArrayList<String>): ArrayList<String> {
             status.add(EPSILON)
             val textList = ArrayList<String>()
             result.forEach { it ->
                 val sb = StringBuilder()
                 sb.append("节点${it.num}:\n")
-                for (i in status){
+                for (i in status) {
                     sb.append("$i->")
-                    val listTemp = it.nextList.filter {l->
+                    val listTemp = it.nextList.filter { l ->
                         l.second == i.toString()
                     }
-                    if (listTemp.isEmpty()){
+                    if (listTemp.isEmpty()) {
                         sb.append("空  ")
-                    }else{
-                        listTemp.forEach{
+                    } else {
+                        listTemp.forEach {
                             sb.append("${it.first.num}  ")
                         }
                     }
@@ -33,11 +33,11 @@ class NFAUtils{
             return textList
         }
 
-        fun countStatusNumber(exp: String):ArrayList<String>{
+        fun countStatusNumber(exp: String): ArrayList<String> {
             val m = HashSet<String>()
             val list = ArrayList<String>()
-            for (i in exp){
-                if (i.isLetter()&&!m.contains(i.toString())){
+            for (i in exp) {
+                if (i.isLetter() && !m.contains(i.toString())) {
                     list.add(i.toString())
                     m.plus(i.toString())
                 }
@@ -45,42 +45,39 @@ class NFAUtils{
             return list
         }
 
-        fun regexToNFA(exp: String):ArrayList<Node>{
+        fun regexToNFA(exp: String): ArrayList<Node> {
             return numberNode(toPostFix(exp))
         }
 
         private fun toPostFix(exp: String): Component {
-            var lastIsLetter = false
+            var lastChar = ' '
             val sb = StringBuilder()
             for (i in exp) {
-                if ((lastIsLetter && i.isLetter()) || (lastIsLetter && i == '('))
+                if ((lastChar.isLetter() && i.isLetter()) ||
+                        (lastChar.isLetter() && i == '(') ||
+                        (lastChar == ')' && i.isLetter()) || (lastChar == '*' && i.isLetter()))
                     sb.append("+")
-                if (i.isLetter()) {
-                    sb.append(i)
-                    lastIsLetter = true
-                } else {
-                    sb.append(i)
-                    lastIsLetter = false
-                }
+                sb.append(i)
+                lastChar = i
             }
             println(sb.toString())
-            lastIsLetter = false
+            lastChar = ' '
             val expression = sb.toString()
             val stack = Stack<Char>()
             val queue = ArrayList<Char>()
             for (i in expression) {
                 if (i.isLetter()) {
                     queue.add(i)
-                    lastIsLetter = true
+                    lastChar = i
                 } else {
                     when (i) {
                         '|', '(' -> {
                             stack.push(i)
                         }
-                        '*' ->{
-                            if (lastIsLetter){
+                        '*' -> {
+                            if (lastChar.isLetter()) {
                                 queue.add(i)
-                            }else{
+                            } else {
                                 stack.push(i)
                             }
                         }

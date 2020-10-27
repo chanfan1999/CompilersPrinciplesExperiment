@@ -29,6 +29,12 @@ class MainController {
     private lateinit var regexText: TextArea
 
     @FXML
+    lateinit var nfaResult: TextArea
+
+    @FXML
+    lateinit var dfaResult: TextArea
+
+    @FXML
     fun openFile() {
         file = FileChooser().showOpenDialog(rootLayout.scene.window as Stage)
         file?.apply {
@@ -38,8 +44,7 @@ class MainController {
         }
     }
 
-    @FXML
-    lateinit var nfaResult: TextArea
+
 
     @FXML
     fun saveFile() {
@@ -66,12 +71,21 @@ class MainController {
     fun toNFA() {
         val status = NFAUtils.countStatusNumber(regexText.text)
         val resultList = NFAUtils.regexToNFA(regexText.text)
-        val nfaText = NFAUtils.getNFATableText(resultList,status)
+        val nfaText = NFAUtils.getNFATableText(resultList, status)
         val n = StringBuilder()
         nfaText.forEach {
             n.append(it)
             n.append('\n')
         }
         nfaResult.text = n.toString()
+    }
+
+    @FXML
+    fun toDFA() {
+        val status = NFAUtils.countStatusNumber(regexText.text)
+        val nfaList = NFAUtils.regexToNFA(regexText.text)
+        val dfaList = DFAUtils.toDFA(nfaList, status)
+        val t = DFAUtils.getDFATableText(dfaList)
+        dfaResult.text = t
     }
 }
