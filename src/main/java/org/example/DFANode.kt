@@ -1,7 +1,4 @@
 package org.example
-
-import java.lang.StringBuilder
-
 class DFANode(hashSet: HashSet<Int>) {
     val containList: HashSet<Int> = hashSet
     val toStatus = HashMap<String, DFANode?>()
