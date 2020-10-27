@@ -49,6 +49,17 @@ class NFAUtils {
             return numberNode(toPostFix(exp))
         }
 
+        fun getEndNodeNumber(nfaResult: ArrayList<NFANode>):Int {
+            var n = 0
+            for (i in nfaResult){
+                if (i.nextList.isEmpty()){
+                    n = i.num
+                    break
+                }
+            }
+            return n
+        }
+
         private fun toPostFix(exp: String): Component {
             var lastChar = ' '
             val sb = StringBuilder()

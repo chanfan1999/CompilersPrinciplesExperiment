@@ -84,7 +84,8 @@ class MainController {
     fun toDFA() {
         val status = NFAUtils.countStatusNumber(regexText.text)
         val nfaList = NFAUtils.regexToNFA(regexText.text)
-        val dfaList = DFAUtils.toDFA(nfaList, status)
+        val endNFANodeNumber = NFAUtils.getEndNodeNumber(nfaList)
+        val dfaList = DFAUtils.toDFA(nfaList, status,endNFANodeNumber)
         val t = DFAUtils.getDFATableText(dfaList)
         dfaResult.text = t
     }

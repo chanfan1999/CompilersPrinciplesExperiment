@@ -7,11 +7,22 @@ import kotlin.collections.HashMap
 import kotlin.collections.HashSet
 
 
+fun main() {
+    val t = "(a|b)*"
+    val status = NFAUtils.countStatusNumber(t)
+    val nfaList = NFAUtils.regexToNFA(t)
+    val endNumber = NFAUtils.getEndNodeNumber(nfaList)
+    val dfaList = DFAUtils.toDFA(nfaList, status, endNumber)
+    DFAUtils.minimizeDFA(dfaList)
+    println("chill")
+}
+
 class DFAUtils {
     companion object {
         private val nameMap = HashMap<DFANode, String>()
-        fun toDFA(nfaResult: ArrayList<NFANode>, status: ArrayList<String>): ArrayList<DFANode> {
-            val epsilonList = esList(nfaResult)//储存每个节点的epsilon闭包
+        fun toDFA(nfaResult: ArrayList<NFANode>, status: ArrayList<String>, endNFANodeNum: Int): ArrayList<DFANode> {
+            nameMap.clear()
+            val epsilonList = getEpsilonList(nfaResult)//储存每个节点的epsilon闭包
             val statusExists = HashMap<DFANode, Int>()
             val statusQueue = ArrayDeque<HashSet<Int>>() as Queue<HashSet<Int>>
             val dfaResult = ArrayList<DFANode>()
@@ -48,10 +59,11 @@ class DFAUtils {
                 dfaResult.add(originNode)
             }
             nameNode(dfaResult)
+            markEndNode(dfaResult, endNFANodeNum)
             return dfaResult
         }
 
-        private fun esList(nfaResult: ArrayList<NFANode>): ArrayList<HashSet<Int>> {
+        private fun getEpsilonList(nfaResult: ArrayList<NFANode>): ArrayList<HashSet<Int>> {
             val statusList = ArrayList<HashSet<Int>>()
             for (i in nfaResult) {
                 val hs = HashSet<Int>()
@@ -83,8 +95,16 @@ class DFAUtils {
             }
         }
 
+        private fun markEndNode(dfaResult: ArrayList<DFANode>, nfaEndNodeNumber: Int) {
+            dfaResult.forEach {
+                if (it.containList.contains(nfaEndNodeNumber)) {
+                    it.isEndStatus = true
+                }
+            }
+        }
 
         fun getDFATableText(dfaResult: ArrayList<DFANode>): String {
+            nameNode(dfaResult)
             val sb = StringBuilder()
             for (i in dfaResult) {
                 sb.append("状态${nameMap[i]}包括:\n")
@@ -109,6 +129,17 @@ class DFAUtils {
                 }
             }
             return sb.toString()
+        }
+
+        fun minimizeDFA(dfaResult: ArrayList<DFANode>) {
+            val endSet = HashSet<DFANode>()
+            val nonEndSet = HashSet<DFANode>()
+            endSet.addAll(dfaResult.filter { node ->
+                node.isEndStatus
+            })
+            nonEndSet.addAll(dfaResult.filter { node ->
+                !node.isEndStatus
+            })
         }
     }
 }

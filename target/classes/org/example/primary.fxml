@@ -34,17 +34,21 @@
                 <Button mnemonicParsing="false" onAction="#openFile" text="打开正则表达式" />
                 <Button mnemonicParsing="false" onAction="#saveFile" text="保存表达式" GridPane.columnIndex="1" />
                 <Button mnemonicParsing="false" onAction="#toNFA" text="生成NFA" GridPane.rowIndex="1" />
-                <Button mnemonicParsing="false" onAction="#toDFA" text="生成DFA" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                <Button mnemonicParsing="false" onAction="#toDFA" text="生成DFA" GridPane.columnIndex="1"
+                        GridPane.rowIndex="1"/>
                 <Button mnemonicParsing="false" text="最小化DFA" GridPane.rowIndex="2" />
                 <Button mnemonicParsing="false" text="生成词法分析" GridPane.columnIndex="1" GridPane.rowIndex="2" />
             </children>
         </GridPane>
-      <HBox alignment="TOP_CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" VBox.vgrow="ALWAYS">
-         <children>
-            <TextArea fx:id="nfaResult" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" promptText="NFA结果" />
-            <TextArea fx:id="dfaResult" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" promptText="DFA结果" />
-            <TextArea maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" promptText="最小化DFA结果" />
-         </children>
-      </HBox>
+        <HBox alignment="TOP_CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308"
+              VBox.vgrow="ALWAYS">
+            <children>
+                <TextArea fx:id="nfaResult" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308"
+                          promptText="NFA结果"/>
+                <TextArea fx:id="dfaResult" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308"
+                          promptText="DFA结果"/>
+                <TextArea maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" promptText="最小化DFA结果"/>
+            </children>
+        </HBox>
     </children>
 </VBox>
