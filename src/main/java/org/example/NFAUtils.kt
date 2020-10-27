@@ -9,7 +9,7 @@ class NFAUtils {
 
     companion object {
         const val EPSILON = "epsilon"
-        fun getNFATableText(result: ArrayList<Node>, status: ArrayList<String>): ArrayList<String> {
+        fun getNFATableText(result: ArrayList<NFANode>, status: ArrayList<String>): ArrayList<String> {
             status.add(EPSILON)
             val textList = ArrayList<String>()
             result.forEach { it ->
@@ -45,7 +45,7 @@ class NFAUtils {
             return list
         }
 
-        fun regexToNFA(exp: String): ArrayList<Node> {
+        fun regexToNFA(exp: String): ArrayList<NFANode> {
             return numberNode(toPostFix(exp))
         }
 
@@ -130,8 +130,8 @@ class NFAUtils {
 
 
         private fun or(c1: Component, c2: Component): Component {
-            val tempStart = Node()
-            val tempEnd = Node()
+            val tempStart = NFANode()
+            val tempEnd = NFANode()
             tempStart.nextList.add(Pair(c1.headNode, EPSILON))
             tempStart.nextList.add(Pair(c2.headNode, EPSILON))
             c1.tailNode.nextList.add(Pair(tempEnd, EPSILON))
@@ -146,18 +146,18 @@ class NFAUtils {
 
         private fun closure(c1: Component): Component {
             c1.tailNode.nextList.add(c1.headNode to EPSILON)//连接到开头
-            val tempStart = Node()
-            val tempEnd = Node()
+            val tempStart = NFANode()
+            val tempEnd = NFANode()
             tempStart.nextList.add(c1.headNode to EPSILON)
             tempStart.nextList.add(tempEnd to EPSILON)
             c1.tailNode.nextList.add(tempEnd to EPSILON)
             return Component(tempStart, tempEnd)
         }
 
-        private fun numberNode(c: Component): ArrayList<Node> {
-            val nodeList = ArrayList<Node>()
-            val visited = HashMap<Node, Boolean>()
-            val queue = ArrayDeque<Node>() as Queue<Node>
+        private fun numberNode(c: Component): ArrayList<NFANode> {
+            val nodeList = ArrayList<NFANode>()
+            val visited = HashMap<NFANode, Boolean>()
+            val queue = ArrayDeque<NFANode>() as Queue<NFANode>
             queue.add(c.headNode)
             var i = 0
             while (queue.isNotEmpty()) {

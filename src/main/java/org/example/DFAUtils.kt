@@ -10,7 +10,7 @@ import kotlin.collections.HashSet
 class DFAUtils {
     companion object {
         private val nameMap = HashMap<DFANode, String>()
-        fun toDFA(nfaResult: ArrayList<Node>, status: ArrayList<String>): ArrayList<DFANode> {
+        fun toDFA(nfaResult: ArrayList<NFANode>, status: ArrayList<String>): ArrayList<DFANode> {
             val epsilonList = esList(nfaResult)//储存每个节点的epsilon闭包
             val statusExists = HashMap<DFANode, Int>()
             val statusQueue = ArrayDeque<HashSet<Int>>() as Queue<HashSet<Int>>
@@ -23,7 +23,7 @@ class DFAUtils {
                 status.forEach { r ->
                     val tempStatus = HashSet<Int>()
                     originStatus.forEach { i ->
-                        nfaResult[i].nextList.filter { pair: Pair<Node, String> ->
+                        nfaResult[i].nextList.filter { pair: Pair<NFANode, String> ->
                             pair.second == r
                         }.forEach {
                             tempStatus.addAll(epsilonList[it.first.num])
@@ -51,7 +51,7 @@ class DFAUtils {
             return dfaResult
         }
 
-        private fun esList(nfaResult: ArrayList<Node>): ArrayList<HashSet<Int>> {
+        private fun esList(nfaResult: ArrayList<NFANode>): ArrayList<HashSet<Int>> {
             val statusList = ArrayList<HashSet<Int>>()
             for (i in nfaResult) {
                 val hs = HashSet<Int>()
