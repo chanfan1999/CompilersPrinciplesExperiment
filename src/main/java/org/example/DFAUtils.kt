@@ -15,6 +15,7 @@ fun main() {
     val dfaList = DFAUtils.toDFA(nfaList, status, endNumber)
     DFAUtils.minimizeDFA(dfaList)
     println("chill")
+    println("chillee")
 }
 
 class DFAUtils {
