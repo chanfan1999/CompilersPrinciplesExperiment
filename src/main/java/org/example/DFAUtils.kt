@@ -25,7 +25,6 @@ class DFAUtils {
             return sb.toString()
         }
 
-
         fun toDFA(nfaResult: ArrayList<NFANode>, status: ArrayList<String>, endNFANodeNum: Int): ArrayList<DFANode> {
             nameMap.clear()
             val epsilonList = getEpsilonList(nfaResult)//储存每个节点的epsilon闭包
@@ -105,6 +104,9 @@ class DFAUtils {
             dfaResult.forEach {
                 if (it.containList.contains(nfaEndNodeNumber)) {
                     it.isEndStatus = true
+                }
+                if (it.containList.contains(0)){
+                    it.isBeginStatus = true
                 }
             }
         }

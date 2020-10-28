@@ -109,7 +109,6 @@ class NFAUtils {
             while (stack.isNotEmpty()) {
                 queue.add(stack.pop())
             }
-            println("queue:" + queue)
             val result = Stack<Component>()
             for (i in queue) {
                 if (!i.isLetter()) {

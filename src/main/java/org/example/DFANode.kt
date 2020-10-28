@@ -4,6 +4,7 @@ class DFANode(hashSet: HashSet<Int>) {
     val toStatus = HashMap<String, DFANode?>()
     lateinit var name: String
     var isEndStatus: Boolean = false
+    var isBeginStatus:Boolean = false
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
         if (other !is DFANode) return false

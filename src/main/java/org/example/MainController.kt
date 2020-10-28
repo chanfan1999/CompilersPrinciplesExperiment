@@ -26,6 +26,9 @@ class MainController {
     private lateinit var rootLayout: VBox
 
     @FXML
+    private lateinit var analysisResult:TextArea
+
+    @FXML
     private lateinit var regexText: TextArea
 
     @FXML
@@ -102,5 +105,16 @@ class MainController {
         val t = DFAUtils.minimizeDFA(dfaList,status)
         val tex = DFAUtils.getMinDFAText(t)
         minDFAResult.text = tex
+    }
+
+    @FXML
+    fun toC(){
+        val status = NFAUtils.countStatusNumber(regexText.text)
+        val nfaList = NFAUtils.regexToNFA(regexText.text)
+        val endNFANodeNumber = NFAUtils.getEndNodeNumber(nfaList)
+        val dfaList = DFAUtils.toDFA(nfaList, status,endNFANodeNumber)
+        val t = DFAUtils.minimizeDFA(dfaList,status)
+        val text = CProducer.toC(t)
+        analysisResult.text = text
     }
 }
