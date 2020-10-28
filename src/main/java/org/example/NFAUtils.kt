@@ -49,10 +49,10 @@ class NFAUtils {
             return numberNode(toPostFix(exp))
         }
 
-        fun getEndNodeNumber(nfaResult: ArrayList<NFANode>):Int {
+        fun getEndNodeNumber(nfaResult: ArrayList<NFANode>): Int {
             var n = 0
-            for (i in nfaResult){
-                if (i.nextList.isEmpty()){
+            for (i in nfaResult) {
+                if (i.nextList.isEmpty()) {
                     n = i.num
                     break
                 }
@@ -71,7 +71,6 @@ class NFAUtils {
                 sb.append(i)
                 lastChar = i
             }
-            println(sb.toString())
             lastChar = ' '
             val expression = sb.toString()
             val stack = Stack<Char>()
@@ -82,7 +81,7 @@ class NFAUtils {
                     lastChar = i
                 } else {
                     when (i) {
-                        '|', '(' -> {
+                        '+', '(' -> {
                             stack.push(i)
                         }
                         '*' -> {
@@ -98,8 +97,8 @@ class NFAUtils {
                             }
                             stack.pop()
                         }
-                        '+' -> {
-                            while (stack.isNotEmpty() && (stack.peek() == '*' || stack.peek() == '|')) {
+                        '|' -> {
+                            while (stack.isNotEmpty() && (stack.peek() == '*' || stack.peek() == '+')) {
                                 queue.add(stack.pop())
                             }
                             stack.push(i)
@@ -110,7 +109,7 @@ class NFAUtils {
             while (stack.isNotEmpty()) {
                 queue.add(stack.pop())
             }
-            println(queue)
+            println("queue:" + queue)
             val result = Stack<Component>()
             for (i in queue) {
                 if (!i.isLetter()) {
