@@ -33,6 +33,9 @@ class MainController {
 
     @FXML
     lateinit var dfaResult: TextArea
+    @FXML
+    lateinit var minDFAResult: TextArea
+
 
     @FXML
     fun openFile() {
@@ -88,5 +91,16 @@ class MainController {
         val dfaList = DFAUtils.toDFA(nfaList, status,endNFANodeNumber)
         val t = DFAUtils.getDFATableText(dfaList)
         dfaResult.text = t
+    }
+
+    @FXML
+    fun minimizeDFA(){
+        val status = NFAUtils.countStatusNumber(regexText.text)
+        val nfaList = NFAUtils.regexToNFA(regexText.text)
+        val endNFANodeNumber = NFAUtils.getEndNodeNumber(nfaList)
+        val dfaList = DFAUtils.toDFA(nfaList, status,endNFANodeNumber)
+        val t = DFAUtils.minimizeDFA(dfaList,status)
+        val tex = DFAUtils.getMinDFAText(t)
+        minDFAResult.text = tex
     }
 }

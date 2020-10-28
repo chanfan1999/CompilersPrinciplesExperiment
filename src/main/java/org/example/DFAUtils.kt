@@ -2,25 +2,30 @@ package org.example
 
 import org.example.NFAUtils.Companion.EPSILON
 import java.util.*
+import java.util.stream.Collectors
 import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
 import kotlin.collections.HashSet
 
 
-fun main() {
-    val t = "(a|b)*"
-    val status = NFAUtils.countStatusNumber(t)
-    val nfaList = NFAUtils.regexToNFA(t)
-    val endNumber = NFAUtils.getEndNodeNumber(nfaList)
-    val dfaList = DFAUtils.toDFA(nfaList, status, endNumber)
-    DFAUtils.minimizeDFA(dfaList)
-    println("chill")
-    println("chillee")
-}
-
 class DFAUtils {
     companion object {
         private val nameMap = HashMap<DFANode, String>()
+
+        fun getMinDFAText(minList: ArrayList<MinDFANode>): String {
+            val sb = StringBuilder()
+            sb.append("最小化DFA结果包含${minList.size}种状态：\n")
+            for (i in minList) {
+                sb.append("状态${i.name}：\n")
+                for ((k,v) in i.toStatus){
+                    sb.append("$k-->$v  ")
+                }
+                sb.append('\n')
+            }
+            return sb.toString()
+        }
+
+
         fun toDFA(nfaResult: ArrayList<NFANode>, status: ArrayList<String>, endNFANodeNum: Int): ArrayList<DFANode> {
             nameMap.clear()
             val epsilonList = getEpsilonList(nfaResult)//储存每个节点的epsilon闭包
@@ -132,7 +137,7 @@ class DFAUtils {
             return sb.toString()
         }
 
-        fun minimizeDFA(dfaResult: ArrayList<DFANode>) {
+        fun minimizeDFA(dfaResult: ArrayList<DFANode>, status: ArrayList<String>): ArrayList<MinDFANode> {
             val endSet = HashSet<DFANode>()
             val nonEndSet = HashSet<DFANode>()
             endSet.addAll(dfaResult.filter { node ->
@@ -141,6 +146,72 @@ class DFAUtils {
             nonEndSet.addAll(dfaResult.filter { node ->
                 !node.isEndStatus
             })
+            val targetList = ArrayList<HashSet<DFANode>>()
+            targetList.add(nonEndSet)
+            targetList.add(endSet)
+            val stack = Stack<HashSet<DFANode>>()
+            stack.push(nonEndSet)
+            stack.push(endSet)
+            while (stack.isNotEmpty()) {
+                val set = stack.pop()
+                if (set.isNotEmpty() && set.size > 1) {
+                    for (i in status) {
+                        val temp = set.stream().filter { n -> n.toStatus[i] != null }.collect(Collectors.groupingBy { node ->
+                            node.toStatus[i]?.let { inWhichSet(it, targetList) }
+                        })
+                        val newSet = HashSet<DFANode>()
+                        for ((_, v) in temp) {
+                            v?.let { newSet.addAll(it) }
+                        }
+                        if (newSet.size != set.size && newSet.isNotEmpty()) {
+                            targetList.remove(set)
+                            targetList.add(newSet)
+                            set.removeAll(newSet)
+                            targetList.add(set)
+                            stack.push(newSet)
+                            stack.push(set)
+                            break
+                        }
+                    }
+                }
+            }
+            return nameMinNode(targetList, status)
+        }
+
+        private fun nameMinNode(targetList: ArrayList<HashSet<DFANode>>, status: ArrayList<String>): ArrayList<MinDFANode> {
+            var name = 'A'
+            val minNodeList = ArrayList<MinDFANode>()
+            for (i in targetList) {
+                val tempNode = MinDFANode()
+                tempNode.name = name.toString()
+                tempNode.set.addAll(i)
+                tempNode.standNode = i.first()
+                minNodeList.add(tempNode)
+                name += 1
+            }
+
+            for (i in minNodeList) {
+                for (s in status) {
+                    val t = i.standNode.toStatus[s]
+                    for (j in minNodeList) {
+                        if (j.set.contains(t)) {
+                            i.toStatus[s] = j.name
+                            break
+                        }
+                    }
+                }
+            }
+            return minNodeList
+        }
+
+        private fun inWhichSet(n: DFANode, list: ArrayList<HashSet<DFANode>>): Int {
+            for ((index, i) in list.withIndex()) {
+                if (i.contains(n))
+                    return index
+            }
+            return 0
         }
     }
+
+
 }
