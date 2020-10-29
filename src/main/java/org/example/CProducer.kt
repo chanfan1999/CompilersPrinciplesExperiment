@@ -18,7 +18,7 @@ class CProducer {
             return sb.toString()
         }
 
-        fun funCreator(m: MinDFANode): String {
+        private fun funCreator(m: MinDFANode): String {
             val sb = StringBuilder()
             sb.append("""void ${m.name}(char t){
     switch(t){
