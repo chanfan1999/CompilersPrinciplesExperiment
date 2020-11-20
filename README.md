@@ -2,6 +2,8 @@
 
 采用Maven进行项目管理，适用于JavaFX构建的基本框架。
 
+### 同步仓库后注意切换到JDK 14环境，否则可能无法正常运行。
+
 通过maven中的jlink命令生成最小JRE环境，通过maven中的package命令生成包含依赖的jar包，以便后续打包处理。
 
 jar包在target目录生成，包含依赖的jar包名字为
