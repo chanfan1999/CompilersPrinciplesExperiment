@@ -1,0 +1,20 @@
+digraph g {
+node [shape =record, charset = "UTF-8" fontname = "Microsoft Yahei", fontsize = 14]
+ngx_pool_t [
+                color = "cornflowerblue"
+                label  = "ngx_pool_t | {
+                        {d | {
+                                *last\-\>x |
+                                *end |
+                                *next |
+                                failed
+                        }}|
+                        *max |
+                        *current |
+                        *chain |
+                        *cleanup |
+                        *log
+                        }"
+
+        ]
+}

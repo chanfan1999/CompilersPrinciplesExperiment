@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.text.*?>
+<?import java.lang.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+
+<HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="492.0" prefWidth="983.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.MainController">
+   <children>
+      <VBox fx:id="rootLayout" alignment="CENTER" prefHeight="406.0" prefWidth="388.0" spacing="5.0">
+         <children>
+            <Label text="用大写字母表示非终结符号,小写字母或字符表示终结符" VBox.vgrow="ALWAYS" />
+            <TextArea fx:id="editText" minHeight="-Infinity" minWidth="-Infinity" prefHeight="100.0" prefWidth="350.0" text="这里" wrapText="true" />
+            <HBox alignment="TOP_CENTER" minHeight="-Infinity" minWidth="-Infinity">
+               <children>
+                  <Button mnemonicParsing="false" onAction="#openFile" text="打开" />
+                  <Button mnemonicParsing="false" onAction="#saveFile" text="保存" />
+                  <Button mnemonicParsing="false" onAction="#analyse" text="分析" />
+               </children>
+            </HBox>
+            <HBox minHeight="-Infinity" minWidth="-Infinity">
+               <children>
+                  <Button mnemonicParsing="false" onAction="#setExample" text="例子1" />
+                  <Button mnemonicParsing="false" onAction="#setExample" text="例子2" />
+                  <Button mnemonicParsing="false" onAction="#setExample" text="例子3" />
+                  <Button mnemonicParsing="false" onAction="#setExample" text="例子4" />
+                  <Button mnemonicParsing="false" onAction="#setExample" text="例子5" />
+                  <Button mnemonicParsing="false" onAction="#setExample" text="例子6" />
+               </children>
+            </HBox>
+            <TextArea fx:id="firstSetArea" editable="false" VBox.vgrow="ALWAYS">
+               <font>
+                  <Font size="28.0" />
+               </font>
+            </TextArea>
+         </children>
+      </VBox>
+      <VBox minHeight="-Infinity" minWidth="-Infinity">
+         <children>
+            <Label text="是否需要扩充：" />
+            <Label fx:id="needExpand" prefHeight="92.0" prefWidth="109.0">
+               <font>
+                  <Font size="37.0" />
+               </font>
+            </Label>
+            <Label text="是否为SLR(1)文法：" />
+            <Label fx:id="isSLR" prefHeight="92.0" prefWidth="109.0">
+               <font>
+                  <Font size="37.0" />
+               </font>
+            </Label>
+            <Label text="非SLR(1)文法原因：" />
+            <Label fx:id="reason" prefHeight="92.0" prefWidth="109.0" wrapText="true">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Label>
+         </children>
+      </VBox>
+      <Label minHeight="-Infinity" minWidth="-Infinity" text="DFA图" />
+      <ImageView fx:id="imageView" fitHeight="493.0" fitWidth="231.0" pickOnBounds="true" preserveRatio="true" HBox.hgrow="ALWAYS" />
+      <Label minHeight="-Infinity" minWidth="-Infinity" text="分析表" />
+      <TextArea fx:id="tableArea" editable="false">
+         <font>
+            <Font size="20.0" />
+         </font></TextArea>
+   </children>
+</HBox>

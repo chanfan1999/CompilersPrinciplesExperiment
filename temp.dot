@@ -1,0 +1,25 @@
+digraph g {
+node [shape="box" , charset = "UTF-8" fontname = "Microsoft Yahei"]
+1 [label="Node 1:
+Z->.E
+E->.E+n
+E->.n
+"]
+1->2 [label="E"]
+1->5 [label="n"]
+2 [label="Node 2:
+Z->E.
+E->E.+n
+"]
+2->3 [label="+"]
+3 [label="Node 3:
+E->E+.n
+"]
+3->4 [label="n"]
+4 [label="Node 4:
+E->E+n.
+"]
+5 [label="Node 5:
+E->n.
+"]
+}
